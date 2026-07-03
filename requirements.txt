@@ -1,0 +1,10 @@
+torch
+torchvision
+numpy
+tqdm
+scikit-learn
+tensorboard
+matplotlib
+# AutoAttack (FGSM/PGD are built-in and need nothing extra):
+#   pip install git+https://github.com/fra31/auto-attack
+# wandb        # optional: only if you use --logger wandb

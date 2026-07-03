@@ -1,0 +1,38 @@
+# Experiment: TinyImageNet (resized to 32x32) — prune, train, evaluate robustness.
+# Requires the dataset unzipped at `tinyimagenet_dir`
+# (http://cs231n.stanford.edu/tiny-imagenet-200.zip).
+# python <script>.py --config configs/tinyimagenet.yaml   (CLI args override).
+
+dataset: tinyimagenet
+tinyimagenet_dir: ./tiny-imagenet-200
+
+# --- pruning (main.py) ---
+models: [resnet20, resnet18, vgg19]
+pruners: [snip, grasp, synflow, dpai, yopo]
+sparsity: [0.5, 0.9, 0.95]
+dpai_steps: 100
+grasp_samples_per_class: 10
+yopo_search_steps: 30
+output_dir: ./output
+
+# --- training (train.py) ---
+model: resnet18
+epochs: 200
+lr: 0.1
+momentum: 0.9
+weight_decay: 0.0005
+amp: "auto"            # "auto" | "on" | "off"
+logger: tensorboard
+log_dir: ./runs
+
+# --- attacks / metrics ---
+pgd_steps: [10, 20, 100]
+aa_version: standard
+n_samples: 1000
+
+# --- shared ---
+batch_size: 128
+num_workers: 4
+data_root: ./data
+seed: 1
+deterministic: false
